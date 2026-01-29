@@ -30,7 +30,7 @@ export declare namespace TransferBills {
     /** 收款用户OpenID */
     openid: string;
     /** 收款用户姓名 */
-    user_name?: number;
+    user_name?: string;
     /** 转账金额单位为"分" */
     transfer_amount: number;
     /** 转账备注 */
