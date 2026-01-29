@@ -980,11 +980,9 @@ class Pay extends Base {
       ...params,
     };
     
-    const serial_no = _params?.wx_serial_no;
-    delete _params.wx_serial_no;
     const authorization = this.buildAuthorization('POST', url, _params);
-
-    const headers = this.getHeaders(authorization, { 'Wechatpay-Serial': serial_no || this.serial_no, 'Content-Type': 'application/json' });
+    
+    const headers = this.getHeaders(authorization, { 'Wechatpay-Serial': this.serial_no, 'Content-Type': 'application/json' });
     return await this.httpService.post(url, params, headers);
   }
 
