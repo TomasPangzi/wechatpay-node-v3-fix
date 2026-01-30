@@ -247,10 +247,14 @@ class Pay extends Base {
    * @param body 请求报文主体
    */
   public getSignature(method: string, nonce_str: string, timestamp: string, url: string, body?: string | Record<string, any>): string {
-    let str = method + '\n' + url + '\n' + timestamp + '\n' + nonce_str + '\n';
-    if (body && body instanceof Object) body = JSON.stringify(body);
-    if (body) str = str + body + '\n';
-    if (method === 'GET') str = str + '\n';
+    let str = `${method}\n${url}\n${timestamp}\n${nonce_str}\n`;
+    if (body !== undefined && body !== null) {
+        // 统一处理：对象/数组用 JSON，其他用 String
+        str += (typeof body === 'object') ? JSON.stringify(body) : String(body);
+    }
+    str += '\n';
+
+    if (method === 'GET') str += '\n';
     return this.sha256WithRsa(str);
   }
   // jsapi 和 app 支付参数签名 加密自动顺序如下 不能错乱
@@ -975,15 +979,14 @@ class Pay extends Base {
    */
   public async transfer_cancel(params: TransferBills.CancelInput): Promise<TransferBills.CancelOutput> {
     const url = `https://api.mch.weixin.qq.com/v3/fund-app/mch-transfer/transfer-bills/out-bill-no/${params.out_bill_no}/cancel`;
-    const _params = {
-      appid: this.appid,
-      ...params,
-    };
-    
-    const authorization = this.buildAuthorization('POST', url, _params);
-    
-    const headers = this.getHeaders(authorization, { 'Wechatpay-Serial': this.serial_no, 'Content-Type': 'application/json' });
-    return await this.httpService.post(url, params, headers);
+    const authorization = this.buildAuthorization('POST', url, undefined);
+
+    const headers = this.getHeaders(authorization, {
+      'Wechatpay-Serial': this.serial_no,
+      mchid: this.mchid,
+      'Content-Type': 'application/json',
+    });
+    return await this.httpService.post(url, undefined, headers);
   }
 
   /**

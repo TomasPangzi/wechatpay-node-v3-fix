@@ -55,11 +55,11 @@ var PayRequest = /** @class */ (function () {
                         return [4 /*yield*/, superagent_1.default
                                 .post(url)
                                 .send(params)
-                                .attach('file', params.pic_buffer, {
+                                .attach('file', params === null || params === void 0 ? void 0 : params.pic_buffer, {
                                 filename: '72fe0092be0cf9dd8420579cc954fb4e.jpg',
                                 contentType: 'image/jpg',
                             })
-                                .field('meta', JSON.stringify(params.fileinfo))];
+                                .field('meta', JSON.stringify(params === null || params === void 0 ? void 0 : params.fileinfo))];
                     case 1:
                         result = _b.sent();
                         return [2 /*return*/, {

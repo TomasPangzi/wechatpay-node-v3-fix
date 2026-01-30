@@ -253,13 +253,14 @@ var Pay = /** @class */ (function (_super) {
      * @param body 请求报文主体
      */
     Pay.prototype.getSignature = function (method, nonce_str, timestamp, url, body) {
-        var str = method + '\n' + url + '\n' + timestamp + '\n' + nonce_str + '\n';
-        if (body && body instanceof Object)
-            body = JSON.stringify(body);
-        if (body)
-            str = str + body + '\n';
+        var str = method + "\n" + url + "\n" + timestamp + "\n" + nonce_str + "\n";
+        if (body !== undefined && body !== null) {
+            // 统一处理：对象/数组用 JSON，其他用 String
+            str += (typeof body === 'object') ? JSON.stringify(body) : String(body);
+        }
+        str += '\n';
         if (method === 'GET')
-            str = str + '\n';
+            str += '\n';
         return this.sha256WithRsa(str);
     };
     // jsapi 和 app 支付参数签名 加密自动顺序如下 不能错乱
@@ -1161,15 +1162,18 @@ var Pay = /** @class */ (function (_super) {
      */
     Pay.prototype.transfer_cancel = function (params) {
         return __awaiter(this, void 0, void 0, function () {
-            var url, _params, authorization, headers;
+            var url, authorization, headers;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         url = "https://api.mch.weixin.qq.com/v3/fund-app/mch-transfer/transfer-bills/out-bill-no/" + params.out_bill_no + "/cancel";
-                        _params = __assign({ appid: this.appid }, params);
-                        authorization = this.buildAuthorization('POST', url, _params);
-                        headers = this.getHeaders(authorization, { 'Wechatpay-Serial': this.serial_no, 'Content-Type': 'application/json' });
-                        return [4 /*yield*/, this.httpService.post(url, params, headers)];
+                        authorization = this.buildAuthorization('POST', url, undefined);
+                        headers = this.getHeaders(authorization, {
+                            'Wechatpay-Serial': this.serial_no,
+                            mchid: this.mchid,
+                            'Content-Type': 'application/json',
+                        });
+                        return [4 /*yield*/, this.httpService.post(url, undefined, headers)];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
             });
