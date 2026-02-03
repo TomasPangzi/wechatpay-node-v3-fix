@@ -1047,11 +1047,7 @@ class Pay extends Base {
     try {
       // 生成签名
       const authorization = this.buildAuthorization('GET', download_url);
-      const headers = this.getHeaders(authorization, {
-        'Wechatpay-Serial': this.serial_no,
-        mchid: this.mchid,
-        'Content-Type': 'application/json',
-      });
+      const headers = this.getHeaders(authorization);
       
       // 直接下载
       const result = await this.httpService.downloadFile(download_url, headers);

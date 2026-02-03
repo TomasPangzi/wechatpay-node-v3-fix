@@ -85,7 +85,19 @@ export class PayRequest implements IPayRequest {
         .get(url)
         .set(headers)
         .buffer(true);
-      
+          // +++ 添加关键调试日志 +++
+        console.log('[原始响应] 状态码:', response.status);
+        console.log('[原始响应] 响应头:', JSON.stringify(response.headers));
+        const contentType = response.header['content-type'];
+        console.log('[原始响应] Content-Type:', contentType);
+        console.log('[原始响应] response.body 类型:', typeof response.body);
+        console.log('[原始响应] response.body 长度:', response.body?.length);
+        // 如果不是Buffer，打印开头内容看看是什么
+        if (!Buffer.isBuffer(response.body) && response.body) {
+          const bodyStart = String(response.body).substring(0, 500);
+          console.log('[原始响应] response.body 开头:', bodyStart);
+        }
+        
       return {
         success: true,
         data: response.body,

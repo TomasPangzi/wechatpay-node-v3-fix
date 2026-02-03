@@ -32,5 +32,5 @@ export interface IPayRequest {
     data?: Buffer;
     error?: string;
     status?: number;
-  }>
+  }>;
 }
