@@ -1267,11 +1267,7 @@ var Pay = /** @class */ (function (_super) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
                         authorization = this.buildAuthorization('GET', download_url);
-                        headers = this.getHeaders(authorization, {
-                            'Wechatpay-Serial': this.serial_no,
-                            mchid: this.mchid,
-                            'Content-Type': 'application/json',
-                        });
+                        headers = this.getHeaders(authorization);
                         return [4 /*yield*/, this.httpService.downloadFile(download_url, headers)];
                     case 1:
                         result = _a.sent();

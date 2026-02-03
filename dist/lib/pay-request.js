@@ -149,25 +149,38 @@ var PayRequest = /** @class */ (function () {
         });
     };
     PayRequest.prototype.downloadFile = function (url, headers) {
+        var _a;
         return __awaiter(this, void 0, void 0, function () {
-            var response, error_4;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+            var response, contentType, bodyStart, error_4;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
                     case 0:
-                        _a.trys.push([0, 2, , 3]);
+                        _b.trys.push([0, 2, , 3]);
                         return [4 /*yield*/, superagent_1.default
                                 .get(url)
                                 .set(headers)
                                 .buffer(true)];
                     case 1:
-                        response = _a.sent();
+                        response = _b.sent();
+                        // +++ 添加关键调试日志 +++
+                        console.log('[原始响应] 状态码:', response.status);
+                        console.log('[原始响应] 响应头:', JSON.stringify(response.headers));
+                        contentType = response.header['content-type'];
+                        console.log('[原始响应] Content-Type:', contentType);
+                        console.log('[原始响应] response.body 类型:', typeof response.body);
+                        console.log('[原始响应] response.body 长度:', (_a = response.body) === null || _a === void 0 ? void 0 : _a.length);
+                        // 如果不是Buffer，打印开头内容看看是什么
+                        if (!Buffer.isBuffer(response.body) && response.body) {
+                            bodyStart = String(response.body).substring(0, 500);
+                            console.log('[原始响应] response.body 开头:', bodyStart);
+                        }
                         return [2 /*return*/, {
                                 success: true,
                                 data: response.body,
                                 status: response.status
                             }];
                     case 2:
-                        error_4 = _a.sent();
+                        error_4 = _b.sent();
                         console.error('文件下载失败:', error_4);
                         return [2 /*return*/, {
                                 success: false,
