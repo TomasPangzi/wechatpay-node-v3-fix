@@ -301,5 +301,23 @@ declare class Pay extends Base {
      * 商家转账用户确认模式下，根据微信转账单号查询转账单的详细信息
      */
     transfer_bill_no(params: TransferBills.BillNoInput): Promise<TransferBills.BillOutput>;
+    /**
+     * 商家转账用户确认模式下，根据商户单号申请电子回单
+     */
+    transfer_elecsign_request_out_bill_no(params: TransferBills.OutBillNoInput): Promise<TransferBills.ElecsignOutput>;
+    /**
+     * 商家转账用户确认模式下，根据商户单号查询电子回单
+     */
+    transfer_elecsign_out_bill_no(params: TransferBills.OutBillNoInput): Promise<TransferBills.ElecsignOutput>;
+    /**
+     * 下载电子回单文件
+     * @param download_url 从查询接口返回的download_url
+     * @returns 返回文件流
+     */
+    download_receipt(download_url: string): Promise<{
+        success: boolean;
+        data?: Buffer;
+        error?: string;
+    }>;
 }
 export = Pay;

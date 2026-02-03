@@ -106,4 +106,32 @@ export declare namespace TransferBills {
   export interface BillOutput extends Output {
     data?: BillDataOutput;
   }
+
+  export interface Elecsign {
+    /** 单据状态 */
+    state: string;
+    create_time: string
+  }
+
+  export interface ElecsingDetail extends Elecsign {
+    update_time?: string,
+    hash_type?: string
+    hash_value?: string
+    download_url?: string
+  }
+
+  export interface ElecsignOutput extends Output {
+     data?: ElecsingDetail
+  }
+
+  export interface DownloadElectronicReceiptInput {
+    download_url: string;
+  }
+  
+  export interface DownloadElectronicReceiptOutput {
+    success: boolean;
+    fileData?: Buffer;
+    hashVerified?: boolean;
+    error?: string;
+  }
 }

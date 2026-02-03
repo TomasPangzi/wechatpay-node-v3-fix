@@ -1003,6 +1003,72 @@ class Pay extends Base {
     const headers = this.getHeaders(authorization, { mchid: this.mchid });
     return await this.httpService.get(url, headers);
   }
+
+  /**
+   * 商家转账用户确认模式下，根据商户单号申请电子回单
+   */
+  public async transfer_elecsign_request_out_bill_no(params: TransferBills.OutBillNoInput): Promise<TransferBills.ElecsignOutput> {
+    const url = `https://api.mch.weixin.qq.com/v3/fund-app/mch-transfer/elecsign/out-bill-no`;
+    const authorization = this.buildAuthorization('POST', url, params);
+
+    const headers = this.getHeaders(authorization, {
+      'Wechatpay-Serial': this.serial_no,
+      mchid: this.mchid,
+      'Content-Type': 'application/json',
+    });
+    return await this.httpService.post(url, params, headers);
+  }
+
+  /**
+   * 商家转账用户确认模式下，根据商户单号查询电子回单
+   */
+  public async transfer_elecsign_out_bill_no(params: TransferBills.OutBillNoInput): Promise<TransferBills.ElecsignOutput> {
+    const url = `https://api.mch.weixin.qq.com/v3/fund-app/mch-transfer/elecsign/out-bill-no/${params.out_bill_no}`;
+    const authorization = this.buildAuthorization('GET', url);
+
+    const headers = this.getHeaders(authorization, {
+      'Wechatpay-Serial': this.serial_no,
+      mchid: this.mchid,
+      'Content-Type': 'application/json',
+    });
+    return await this.httpService.get(url, headers);
+  }
+
+  /**
+   * 下载电子回单文件
+   * @param download_url 从查询接口返回的download_url
+   * @returns 返回文件流
+   */
+  public async download_receipt(download_url: string): Promise<{
+    success: boolean;
+    data?: Buffer;
+    error?: string;
+  }> {
+    try {
+      // 生成签名
+      const authorization = this.buildAuthorization('GET', download_url);
+      const headers = this.getHeaders(authorization, {
+        'Wechatpay-Serial': this.serial_no,
+        mchid: this.mchid,
+        'Content-Type': 'application/json',
+      });
+      
+      // 直接下载
+      const result = await this.httpService.downloadFile(download_url, headers);
+      
+      return {
+        success: result.success,
+        data: result.data,
+        error: result.error
+      };
+    } catch (error) {
+      return {
+        success: false,
+        error: error.message
+      };
+    }
+  }
+
 }
 
 export = Pay;

@@ -1210,6 +1210,87 @@ var Pay = /** @class */ (function (_super) {
             });
         });
     };
+    /**
+     * 商家转账用户确认模式下，根据商户单号申请电子回单
+     */
+    Pay.prototype.transfer_elecsign_request_out_bill_no = function (params) {
+        return __awaiter(this, void 0, void 0, function () {
+            var url, authorization, headers;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        url = "https://api.mch.weixin.qq.com/v3/fund-app/mch-transfer/elecsign/out-bill-no";
+                        authorization = this.buildAuthorization('POST', url, params);
+                        headers = this.getHeaders(authorization, {
+                            'Wechatpay-Serial': this.serial_no,
+                            mchid: this.mchid,
+                            'Content-Type': 'application/json',
+                        });
+                        return [4 /*yield*/, this.httpService.post(url, params, headers)];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    /**
+     * 商家转账用户确认模式下，根据商户单号查询电子回单
+     */
+    Pay.prototype.transfer_elecsign_out_bill_no = function (params) {
+        return __awaiter(this, void 0, void 0, function () {
+            var url, authorization, headers;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        url = "https://api.mch.weixin.qq.com/v3/fund-app/mch-transfer/elecsign/out-bill-no/" + params.out_bill_no;
+                        authorization = this.buildAuthorization('GET', url);
+                        headers = this.getHeaders(authorization, {
+                            'Wechatpay-Serial': this.serial_no,
+                            mchid: this.mchid,
+                            'Content-Type': 'application/json',
+                        });
+                        return [4 /*yield*/, this.httpService.get(url, headers)];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    /**
+     * 下载电子回单文件
+     * @param download_url 从查询接口返回的download_url
+     * @returns 返回文件流
+     */
+    Pay.prototype.download_receipt = function (download_url) {
+        return __awaiter(this, void 0, void 0, function () {
+            var authorization, headers, result, error_1;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        authorization = this.buildAuthorization('GET', download_url);
+                        headers = this.getHeaders(authorization, {
+                            'Wechatpay-Serial': this.serial_no,
+                            mchid: this.mchid,
+                            'Content-Type': 'application/json',
+                        });
+                        return [4 /*yield*/, this.httpService.downloadFile(download_url, headers)];
+                    case 1:
+                        result = _a.sent();
+                        return [2 /*return*/, {
+                                success: result.success,
+                                data: result.data,
+                                error: result.error
+                            }];
+                    case 2:
+                        error_1 = _a.sent();
+                        return [2 /*return*/, {
+                                success: false,
+                                error: error_1.message
+                            }];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
     Pay.certificates = {}; // 微信平台证书 key 是 serialNo, value 是 publicKey
     return Pay;
 }(base_1.Base));

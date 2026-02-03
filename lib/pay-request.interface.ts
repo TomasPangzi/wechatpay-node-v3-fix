@@ -21,4 +21,16 @@ export interface IPayRequest {
    * @param headers 请求头
    */
   get(url: string, headers: Record<string, any>): Promise<Output>;
+
+  /**
+   * 下载文件
+   * @param url 
+   * @param headers 
+   */
+  downloadFile(url: string, headers: Record<string, any>): Promise<{
+    success: boolean;
+    data?: Buffer;
+    error?: string;
+    status?: number;
+  }>
 }

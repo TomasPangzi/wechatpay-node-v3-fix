@@ -148,6 +148,37 @@ var PayRequest = /** @class */ (function () {
             });
         });
     };
+    PayRequest.prototype.downloadFile = function (url, headers) {
+        return __awaiter(this, void 0, void 0, function () {
+            var response, error_4;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, superagent_1.default
+                                .get(url)
+                                .set(headers)
+                                .buffer(true)];
+                    case 1:
+                        response = _a.sent();
+                        return [2 /*return*/, {
+                                success: true,
+                                data: response.body,
+                                status: response.status
+                            }];
+                    case 2:
+                        error_4 = _a.sent();
+                        console.error('文件下载失败:', error_4);
+                        return [2 /*return*/, {
+                                success: false,
+                                error: error_4.message || '下载失败',
+                                status: error_4.status || 500
+                            }];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
     return PayRequest;
 }());
 exports.PayRequest = PayRequest;

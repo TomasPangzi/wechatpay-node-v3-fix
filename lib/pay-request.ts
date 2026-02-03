@@ -73,4 +73,31 @@ export class PayRequest implements IPayRequest {
       };
     }
   }
+
+  async downloadFile(url: string, headers: Record<string, any>): Promise<{
+    success: boolean;
+    data?: Buffer;
+    error?: string;
+    status?: number;
+  }> {
+    try {
+      const response = await request
+        .get(url)
+        .set(headers)
+        .buffer(true);
+      
+      return {
+        success: true,
+        data: response.body,
+        status: response.status
+      };
+    } catch (error) {
+      console.error('文件下载失败:', error);
+      return {
+        success: false,
+        error: error.message || '下载失败',
+        status: error.status || 500
+      };
+    }
+  }
 }

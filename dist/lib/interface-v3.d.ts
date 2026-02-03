@@ -1,3 +1,4 @@
+/// <reference types="node" />
 /**
  * 商户转账，微信更新时间2025.03.21
  */
@@ -93,5 +94,28 @@ export declare namespace TransferBills {
     }
     interface BillOutput extends Output {
         data?: BillDataOutput;
+    }
+    interface Elecsign {
+        /** 单据状态 */
+        state: string;
+        create_time: string;
+    }
+    interface ElecsingDetail extends Elecsign {
+        update_time?: string;
+        hash_type?: string;
+        hash_value?: string;
+        download_url?: string;
+    }
+    interface ElecsignOutput extends Output {
+        data?: ElecsingDetail;
+    }
+    interface DownloadElectronicReceiptInput {
+        download_url: string;
+    }
+    interface DownloadElectronicReceiptOutput {
+        success: boolean;
+        fileData?: Buffer;
+        hashVerified?: boolean;
+        error?: string;
     }
 }
