@@ -149,34 +149,19 @@ var PayRequest = /** @class */ (function () {
         });
     };
     PayRequest.prototype.downloadFile = function (url, headers) {
-        var _a, _b;
         return __awaiter(this, void 0, void 0, function () {
-            var response, contentType, bodyStart, data, error_4;
-            return __generator(this, function (_c) {
-                switch (_c.label) {
+            var response, data, error_4;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
                     case 0:
-                        _c.trys.push([0, 2, , 3]);
+                        _a.trys.push([0, 2, , 3]);
                         return [4 /*yield*/, superagent_1.default
                                 .get(url)
                                 .set(headers)
                                 .responseType('blob')
                                 .buffer(true)];
                     case 1:
-                        response = _c.sent();
-                        // +++ 添加关键调试日志 +++
-                        console.log('[原始响应] ', response);
-                        console.log('[原始响应] 状态码:', response.status);
-                        console.log('[原始响应] 响应头:', JSON.stringify(response.headers));
-                        contentType = response.header['content-type'];
-                        console.log('[原始响应] Content-Type:', contentType);
-                        console.log('[原始响应] response.body 类型:', typeof response.body);
-                        console.log('[原始响应] response.body 长度:', (_a = response.body) === null || _a === void 0 ? void 0 : _a.length);
-                        console.log('[原始响应] response.files 长度:', (_b = response.files) === null || _b === void 0 ? void 0 : _b.length);
-                        // 如果不是Buffer，打印开头内容看看是什么
-                        if (!Buffer.isBuffer(response.body) && response.body) {
-                            bodyStart = String(response.body).substring(0, 500);
-                            console.log('[原始响应] response.body 开头:', bodyStart);
-                        }
+                        response = _a.sent();
                         data = void 0;
                         if (response.body instanceof Buffer) {
                             data = response.body;
@@ -196,19 +181,16 @@ var PayRequest = /** @class */ (function () {
                         else {
                             throw new Error('无法获取响应体');
                         }
-                        console.log('[调试] 数据长度:', data.length);
-                        console.log('[调试] 数据前100字节:', data.slice(0, 100).toString('hex'));
                         return [2 /*return*/, {
                                 success: true,
                                 data: data,
                                 status: response.status
                             }];
                     case 2:
-                        error_4 = _c.sent();
-                        console.error('文件下载失败:', error_4);
+                        error_4 = _a.sent();
                         return [2 /*return*/, {
                                 success: false,
-                                error: '下载失败',
+                                error: error_4.message || '下载失败',
                                 status: 500
                             }];
                     case 3: return [2 /*return*/];
