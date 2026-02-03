@@ -95,8 +95,8 @@ export class PayRequest implements IPayRequest {
       console.error('文件下载失败:', error);
       return {
         success: false,
-        error: error.message || '下载失败',
-        status: error.status || 500
+        error: '下载失败',
+        status: 500
       };
     }
   }

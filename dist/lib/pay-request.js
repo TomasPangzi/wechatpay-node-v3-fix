@@ -171,8 +171,8 @@ var PayRequest = /** @class */ (function () {
                         console.error('文件下载失败:', error_4);
                         return [2 /*return*/, {
                                 success: false,
-                                error: error_4.message || '下载失败',
-                                status: error_4.status || 500
+                                error: '下载失败',
+                                status: 500
                             }];
                     case 3: return [2 /*return*/];
                 }

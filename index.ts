@@ -1062,9 +1062,10 @@ class Pay extends Base {
         error: result.error
       };
     } catch (error) {
+      console.log(error)
       return {
         success: false,
-        error: error.message
+        error: '下载失败'
       };
     }
   }

@@ -1282,9 +1282,10 @@ var Pay = /** @class */ (function (_super) {
                             }];
                     case 2:
                         error_1 = _a.sent();
+                        console.log(error_1);
                         return [2 /*return*/, {
                                 success: false,
-                                error: error_1.message
+                                error: '下载失败'
                             }];
                     case 3: return [2 /*return*/];
                 }
